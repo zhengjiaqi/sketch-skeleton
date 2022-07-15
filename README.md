@@ -1,2 +1,2 @@
-# -sketch-skeleton
+# sketch-skeleton
 Generate skeleton screen from sketch

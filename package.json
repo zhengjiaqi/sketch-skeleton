@@ -1,0 +1,44 @@
+{
+  "name": "sketch-skeleton",
+  "version": "2.2.1",
+  "description": "Generate skeleton screen from sketch",
+  "main": "src/index.js",
+  "bin": {
+    "sketch-skeleton": "bin/index.js"
+  },
+  "dependencies": {
+    "commander": "^3.0.2",
+    "debug": "^4.1.0",
+    "mkdirp": "^0.5.1",
+    "tempfile": "^3.0.0",
+    "unzipper": "^0.10.5"
+  },
+  "devDependencies": {
+    "eslint": "^6.5.1",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "mocha": "^6.2.2"
+  },
+  "scripts": {
+    "lint": "eslint src bin test --fix",
+    "test": "mocha test/*.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhengjiaqi/sketch-skeleton.git"
+  },
+  "keywords": [
+    "sketch-skeleton",
+    "sketch",
+    "skeleton"
+  ],
+  "author": "zhengjiaqi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zhengjiaqi/sketch-skeleton/issues"
+  },
+  "homepage": "https://github.com/zhengjiaqi/sketch-skeleton/blob/main/README.md"
+}
