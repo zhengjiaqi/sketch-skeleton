@@ -1,14 +1,16 @@
 {
   "name": "sketch-skeleton",
-  "version": "2.2.1",
+  "version": "0.0.1",
   "description": "Generate skeleton screen from sketch",
   "main": "src/index.js",
+  "types": "src/index.d.ts",
   "bin": {
-    "sketch-skeleton": "bin/index.js"
+    "skeleton": "bin/index.js"
   },
   "dependencies": {
     "commander": "^3.0.2",
     "debug": "^4.1.0",
+    "fs-extra": "^10.1.0",
     "mkdirp": "^0.5.1",
     "tempfile": "^3.0.0",
     "unzipper": "^0.10.5"

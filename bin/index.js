@@ -3,31 +3,38 @@
 const { resolve, basename, extname } = require('path')
 const program = require('commander')
 const pkg = require('../package.json')
-const convert = require('../src')
+const { build } = require('../src')
 let debug = () => {}
 
 program
   .version(pkg.version)
 
 program
-  .command('convert <sketchFile>')
+  .command('build <sketchFile>')
   .alias('c')
   .description('convert sketch file to static html pages')
-  .option('-d, --dest <dir>', 'Dest directory which html pages generate to.')
+  .option('-d, --dest <dir>', 'Dest directory which html skeleton pages generate to.')
   .option('-v, --verbose', 'print details when execute commands.')
+  .option('-l, --useLoading <useLoading>', 'add loading in generated skeleton.', 'true')
+  .option('-m, --generateHtml <generateHtml>', 'generate html skeleton pages.', 'true')
+  .option('-t, --generateTemplate <generateTemplate>', 'generate template skeleton pages.', 'true')
   .action((sketchFile, options) => {
+    options.useLoading = convertBoolean(options.useLoading)
+    options.generateHtml = convertBoolean(options.generateHtml)
+    options.generateTemplate = convertBoolean(options.generateTemplate)
+
     const src = resolve(sketchFile)
     const dest = resolve(
       options.dest || basename(sketchFile, extname(sketchFile))
     )
     // load debug module after set process.env.DEBUG
     if (options.verbose) {
-      process.env.DEBUG = 'sketch-measure-cli,sketch-measure-core'
-      debug = require('debug')('sketch-measure-cli')
+      process.env.DEBUG = 'sketch-skeleton'
+      debug = require('debug')('sketch-skeleton')
     }
     debug('src: %s', dest)
     debug('dest: %s', dest)
-    convert(src, dest)
+    build(src, dest, options)
       .then(() => {
         console.log('')
         console.log('  Success!')
@@ -39,3 +46,7 @@ program
   })
 
 program.parse(process.argv)
+
+function convertBoolean(value) {
+  return value === 'true'
+}
