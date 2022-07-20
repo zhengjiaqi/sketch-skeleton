@@ -16,12 +16,14 @@ program
   .option('-d, --dest <dir>', 'Dest directory which html skeleton pages generate to.')
   .option('-v, --verbose', 'print details when execute commands.')
   .option('-l, --useLoading <useLoading>', 'add loading in generated skeleton.', 'true')
+  .option('-a, --useAdaptive <useAdaptive>', 'generated skeleton page can be adaptive.', 'true')
   .option('-m, --generateHtml <generateHtml>', 'generate html skeleton pages.', 'true')
   .option('-t, --generateTemplate <generateTemplate>', 'generate template skeleton pages.', 'true')
   .action((sketchFile, options) => {
     options.useLoading = convertBoolean(options.useLoading)
     options.generateHtml = convertBoolean(options.generateHtml)
     options.generateTemplate = convertBoolean(options.generateTemplate)
+    options.useAdaptive = convertBoolean(options.useAdaptive)
 
     const src = resolve(sketchFile)
     const dest = resolve(

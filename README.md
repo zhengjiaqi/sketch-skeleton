@@ -33,6 +33,7 @@ skeleton build receives the following parameters：
 
 - **-d, --dest \<dir\>** dest directory which html skeleton pages generate to.
 - **-l, --useLoading \<useLoading\>** add loading in generated skeleton. (default: "true")
+- **-a, --useAdaptive \<useAdaptive\>** generated skeleton page can be adaptive. (default: "true")
 - **-m, --generateHtml \<generateHtml\>** generate html skeleton pages. (default: "true")
 - **-t, --generateTemplate \<generateTemplate\>** generate template skeleton pages. (default: "true")
 - **-v, --verbose** print details when execute commands.
@@ -45,6 +46,7 @@ parameter：
 - sketchFile \<String\> sketch file path
 - options \<Object\> 
   - useLoading \<Boolean\> add loading in generated skeleton. (default: "true")
+  - useAdaptive \<Boolean\> generated skeleton page can be adaptive. (default: "true")
 
 retrun: \<String\> skeleton screen content  
 

@@ -12,11 +12,25 @@ class Skeleton {
     this.artboardIndex = 0
     this.current = this.project.artboards[this.artboardIndex];
   }
-  getRectString(rect) {
-    var width = this.fixNumber(rect.width / this.current.width) + 'vw';
-    var height = (rect.width === 0 ? this.fixNumber(rect.height / this.current.width) : this.fixNumber((rect.height / rect.width) * (rect.width / this.current.width))) + 'vw';
-    var left = this.fixNumber(rect.x / this.current.width) + 'vw';
-    var top = (rect.x === 0 ? this.fixNumber(rect.y / this.current.width) : this.fixNumber((rect.y / rect.x) * (rect.x / this.current.width))) + 'vw';
+  getRectString(rect, option) {
+    const useAdaptive = option.useAdaptive ?? true;
+    let width = '';
+    let height = '';
+    let left = '';
+    let top = '';
+
+    if (useAdaptive) {
+      width = this.fixNumber(rect.width / this.current.width) + 'vw';
+      height = (rect.width === 0 ? this.fixNumber(rect.height / this.current.width) : this.fixNumber((rect.height / rect.width) * (rect.width / this.current.width))) + 'vw';
+      left = this.fixNumber(rect.x / this.current.width) + 'vw';
+      top = (rect.x === 0 ? this.fixNumber(rect.y / this.current.width) : this.fixNumber((rect.y / rect.x) * (rect.x / this.current.width))) + 'vw';
+    } else {
+      width = rect.width + 'px';
+      height = rect.height + 'px';
+      left = rect.x + 'px';
+      top = rect.y + 'px';
+    }
+
     return 'width: ' + width + '; height: ' + height + '; left: ' + left + '; top: ' + top + ';';
   }
   isInt(n) {
@@ -33,12 +47,12 @@ class Skeleton {
           return Number.parseFloat(x).toFixed(6);
       }
   }
-  layers() {
+  layers(option) {
     const layersHTML = [];
     this.current.layers.forEach((layer, index) => {
       const classNames = ['layer', `layer-${layer.objectID}`];
       const cssString = layer.css.join(' ')
-      const rectString = this.getRectString(layer.rect)
+      const rectString = this.getRectString(layer.rect, option)
       layersHTML.push([
         '<div id="layer-' + index + '" class="' + classNames.join(' ') 
         + '" data-index="' + index 
@@ -90,7 +104,7 @@ class Skeleton {
     const loading = '<div class="layer-animation"></div>'
     const generatedHTML = [
       style,
-      this.layers()
+      this.layers(option)
     ]
 
     if (useLoading) {
@@ -135,7 +149,7 @@ async function generateSkeleton(data, dest, option) {
   }
 
   if(option.generateTemplate) {
-    const templateFileDest = resolve(dest, 'index.template.html')
+    const templateFileDest = resolve(dest, 'index.skeleton.html')
     await fs.ensureFile(templateFileDest)
     await fs.writeFile(templateFileDest, skeleton)
   }
