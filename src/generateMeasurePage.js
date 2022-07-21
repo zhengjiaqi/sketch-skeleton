@@ -13,7 +13,7 @@ class Skeleton {
     this.current = this.project.artboards[this.artboardIndex];
   }
   getRectString(rect, option) {
-    const useAdaptive = option.useAdaptive ?? true;
+    const useAdaptive = option.useAdaptive === undefined ? true : option.useAdaptive;
     let width = '';
     let height = '';
     let left = '';
@@ -33,6 +33,20 @@ class Skeleton {
 
     return 'width: ' + width + '; height: ' + height + '; left: ' + left + '; top: ' + top + ';';
   }
+  getCssString(css, option) {
+    const useAdaptive = option.useAdaptive === undefined ? true : option.useAdaptive;
+    let resCss = css
+    if (useAdaptive) { 
+      resCss = resCss.map(cssItem => {
+        cssItem = cssItem.replace(/(border-radius: )(\d+)(px)/g, (match, p1, p2, p3) => {
+          const radius = this.fixNumber(parseInt(p2) / this.current.width) + 'vw'
+          return p1 + radius
+        })
+        return cssItem
+      })
+    }
+    return resCss.join(' ')
+  }
   isInt(n) {
       return n % 1 === 0;
   }
@@ -51,7 +65,7 @@ class Skeleton {
     const layersHTML = [];
     this.current.layers.forEach((layer, index) => {
       const classNames = ['layer', `layer-${layer.objectID}`];
-      const cssString = layer.css.join(' ')
+      const cssString = this.getCssString(layer.css, option)
       const rectString = this.getRectString(layer.rect, option)
       layersHTML.push([
         '<div id="layer-' + index + '" class="' + classNames.join(' ') 
@@ -63,13 +77,14 @@ class Skeleton {
     return layersHTML.join('');
   }
   generate(option) {
-    const useLoading = option.useLoading ?? true;
+    const useLoading = option.useLoading === undefined ? true : option.useLoading;
 
     const style = `
     <style>
       body {
         height: 100vh;
         overflow: hidden;
+        margin: 0;
       }
       .layer {
         position: absolute;
