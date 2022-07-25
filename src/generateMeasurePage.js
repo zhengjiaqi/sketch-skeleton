@@ -64,11 +64,11 @@ class Skeleton {
   layers(option) {
     const layersHTML = [];
     this.current.layers.forEach((layer, index) => {
-      const classNames = ['layer', `layer-${layer.objectID}`];
+      const classNames = ['skeleton-layer', `skeleton-layer-${layer.objectID}`];
       const cssString = this.getCssString(layer.css, option)
       const rectString = this.getRectString(layer.rect, option)
       layersHTML.push([
-        '<div id="layer-' + index + '" class="' + classNames.join(' ') 
+        '<div id="skeleton-layer-' + index + '" class="' + classNames.join(' ') 
         + '" data-index="' + index 
         + '" style="'+ cssString + rectString +'">',
         '</div>'
@@ -82,18 +82,30 @@ class Skeleton {
     const style = `
     <style>
       body {
-        height: 100vh;
-        overflow: hidden;
         margin: 0;
       }
-      .layer {
+      #skeleton-container {
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        position: absolute;
+        z-index: 99;
+      }
+      .skeleton-layer {
         position: absolute;
       }
-      .layer-animation {
+      .skeleton-layer-animation {
         height: 100vh;
         width: 100vw;
         position: absolute;
-        background-color: #666;
+        background: -webkit-linear-gradient(
+          -25deg,
+          rgba(255, 255, 255, 0) 47%,
+          rgba(255, 255, 255, 0.2) 49%,
+          rgba(255, 255, 255, 0.7) 50%,
+          rgba(255, 255, 255, 0.2) 51%,
+          rgba(255, 255, 255, 0) 53%
+        ) rgba(255, 255, 255, 0);
         background: linear-gradient(
           115deg,
           rgba(255, 255, 255, 0) 47%,
@@ -102,6 +114,7 @@ class Skeleton {
           rgba(255, 255, 255, 0.2) 51%,
           rgba(255, 255, 255, 0) 53%
         ) rgba(255, 255, 255, 0);
+        -webkit-animation: loading 3s ease-in-out infinite;
         animation: loading 3s ease-in-out infinite;
         background-position-x: 120%;
         background-size: 300% 100%;
@@ -114,17 +127,27 @@ class Skeleton {
           background-position-x: -150%;
         }
       }
+      @-webkit-keyframes loading{
+        0%{
+          background-position-x: 0%;
+        }
+        100% {
+          background-position-x: -150%;
+        }
+      }
     </style>
     `
-    const loading = '<div class="layer-animation"></div>'
+    const loading = '<div class="skeleton-layer-animation"></div>'
     const generatedHTML = [
       style,
+      '<div id="skeleton-container">',
       this.layers(option)
     ]
 
     if (useLoading) {
       generatedHTML.push(loading)
     }
+    generatedHTML.push('</div>')
     return generatedHTML.join('');
   }
 }
