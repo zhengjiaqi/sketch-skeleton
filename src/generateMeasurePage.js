@@ -88,8 +88,9 @@ class Skeleton {
         width: 100vw;
         height: 100vh;
         overflow: hidden;
-        position: absolute;
-        z-index: 99;
+        position: fixed;
+        top: 0;
+        z-index: 2147483647;
       }
       .skeleton-layer {
         position: absolute;
